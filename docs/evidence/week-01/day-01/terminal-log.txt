@@ -1,0 +1,1 @@
+Day 1 API started successfully with uvicorn. /health returned status ok.
