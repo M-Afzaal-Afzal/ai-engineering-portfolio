@@ -13,6 +13,7 @@ I am updating this repository regularly with working code, daily notes, verifica
 Current milestone:
 
 - [x] Day 1: Repository and FastAPI environment setup
+- [x] Day 2: Pydantic contracts and mock ticket endpoint
 - [ ] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
@@ -215,6 +216,22 @@ Completed:
 - Daily notes folder created
 - Evidence folder created
 
+## Current Day 2 Result
+
+Completed:
+
+- Created Pydantic ticket schemas
+- Added `TicketCreate`, `TicketResponse`, and `ErrorResponse`
+- Added `POST /tickets/mock`
+- Verified valid request returns a ticket response
+- Verified invalid request returns 422 validation error
+- Saved Day 2 evidence
+
+### New API Endpoint
+
+```text
+POST /tickets/mock
+
 ## Roadmap
 
 The repository will gradually include:
@@ -249,3 +266,4 @@ AI Engineering learner and full-stack developer building practical, production-s
 No open-source license has been added yet.
 
 This repository is public for portfolio and learning visibility. Please do not reuse, copy, or redistribute the code without permission.
+```
