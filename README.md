@@ -16,6 +16,7 @@ Current milestone:
 - [x] Day 2: Pydantic contracts and mock ticket endpoint
 - [x] Day 3: Service layer and router structure
 - [x] Day 4: Config management with environment settings
+- [x] Day 5: Request logging middleware
 - [ ] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
@@ -43,6 +44,7 @@ This repo is designed to show:
 - API design and validation
 - Service-layer architecture
 - Environment-based configuration
+- Request logging and observability basics
 - LLM application development
 - Retrieval-Augmented Generation systems
 - Vector search and embeddings
@@ -82,6 +84,7 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - Pydantic
 - pydantic-settings
 - pytest
+- httpx2
 
 ### Frontend
 
@@ -130,6 +133,8 @@ apps/api/
     main.py
     core/
       settings.py
+    middleware/
+      logging.py
     routers/
       health.py
       tickets.py
@@ -140,6 +145,7 @@ apps/api/
   tests/
     test_ticket_service.py
     test_settings.py
+    test_request_logging.py
   .env.example
   pyproject.toml
 ```
@@ -188,6 +194,8 @@ Expected response:
 }
 ```
 
+All API responses also include an `X-Request-ID` response header for request tracing.
+
 ### 5. Open API documentation
 
 ```text
@@ -197,7 +205,7 @@ http://127.0.0.1:8000/docs
 ### 6. Test the mock ticket endpoint
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/tickets/mock" \
+curl -i -X POST "http://127.0.0.1:8000/tickets/mock" \
   -H "Content-Type: application/json" \
   -d '{
     "subject": "Login issue",
@@ -207,7 +215,7 @@ curl -X POST "http://127.0.0.1:8000/tickets/mock" \
   }'
 ```
 
-Expected response:
+Expected response body:
 
 ```json
 {
@@ -218,6 +226,12 @@ Expected response:
   "status": "open",
   "created_at": "..."
 }
+```
+
+Expected response header:
+
+```text
+X-Request-ID: ...
 ```
 
 ### 7. Run tests
@@ -260,6 +274,21 @@ Important:
 - `.env` is local only and should not be committed.
 - Secrets should never be pushed to GitHub.
 
+## Observability
+
+The API includes request logging middleware.
+
+Current logging behavior:
+
+- Generates a unique request ID for every request
+- Preserves an existing `X-Request-ID` if the client sends one
+- Stores the request ID on `request.state.request_id`
+- Adds `X-Request-ID` to every response header
+- Logs request method, path, status code, and latency
+- Logs failed requests with exception details
+
+This creates a foundation for future production observability, tracing, debugging, and LLMOps monitoring.
+
 ## API Endpoints
 
 ### Health Check
@@ -297,6 +326,7 @@ docs/evidence/week-01/day-01/
 docs/evidence/week-01/day-02/
 docs/evidence/week-01/day-03/
 docs/evidence/week-01/day-04/
+docs/evidence/week-01/day-05/
 ```
 
 ## Daily Learning Notes
@@ -364,6 +394,23 @@ Completed:
 - Verified `.env` is ignored and not committed
 - Added settings tests with pytest
 - Saved Day 4 evidence
+
+## Current Day 5 Result
+
+Completed:
+
+- Added request logging middleware
+- Generated a unique request ID for every request
+- Preserved existing `X-Request-ID` when provided by the client
+- Stored request ID on `request.state.request_id`
+- Added `X-Request-ID` response header
+- Logged request method, path, status code, and latency
+- Added exception logging for failed requests
+- Added middleware tests with pytest
+- Verified `/health` includes `X-Request-ID`
+- Verified `/tickets/mock` includes `X-Request-ID`
+- Verified all tests pass
+- Saved Day 5 evidence
 
 ## Roadmap
 
