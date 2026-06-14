@@ -1,0 +1,8 @@
+HTTP/1.1 201 Created
+date: Sun, 14 Jun 2026 13:28:26 GMT
+server: uvicorn
+content-length: 189
+content-type: application/json
+x-request-id: c40e4264-3dc1-40ca-bee5-167bc301c4b4
+
+{"id":"ticket_mock_001","subject":"Login issue","description":"User cannot login after resetting the password.","priority":"high","status":"open","created_at":"2026-06-14T13:28:26.919134Z"}

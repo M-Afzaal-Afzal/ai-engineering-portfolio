@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+date: Sun, 14 Jun 2026 13:28:13 GMT
+server: uvicorn
+content-length: 77
+content-type: application/json
+x-request-id: 2e2c060b-0e60-4cac-a756-840ee54bdf8a
+
+{"status":"ok","service":"api","version":"0.1.0","environment":"development"}
