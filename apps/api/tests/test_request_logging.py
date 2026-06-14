@@ -12,8 +12,7 @@ class TypedTestClient(Protocol):
         url: str,
         *,
         headers: dict[str, str] | None = None,
-    ) -> Response:
-        ...
+    ) -> Response: ...
 
     def post(
         self,
@@ -21,8 +20,7 @@ class TypedTestClient(Protocol):
         *,
         json: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
-    ) -> Response:
-        ...
+    ) -> Response: ...
 
 
 client = cast(TypedTestClient, TestClient(app))

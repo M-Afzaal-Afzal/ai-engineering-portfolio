@@ -14,4 +14,18 @@ dependencies = [
 dev = [
     "httpx2>=2.4.0",
     "pytest>=9.1.0",
+    "ruff>=0.15.17",
 ]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

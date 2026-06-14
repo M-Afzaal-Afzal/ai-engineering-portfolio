@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.schemas.tickets import TicketCreate, TicketResponse
 
@@ -10,5 +10,5 @@ def create_mock_ticket(ticket: TicketCreate) -> TicketResponse:
         description=ticket.description,
         priority=ticket.priority,
         status="open",
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )

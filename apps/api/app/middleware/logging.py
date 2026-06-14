@@ -24,7 +24,10 @@ async def request_logging_middleware(
         latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
         logger.exception(
-            "request_failed request_id=%s method=%s path=%s status_code=%s latency_ms=%s",
+            (
+                "request_failed request_id=%s method=%s path=%s "
+                "status_code=%s latency_ms=%s"
+            ),
             request_id,
             request.method,
             request.url.path,
@@ -46,7 +49,10 @@ async def request_logging_middleware(
     response.headers["X-Request-ID"] = request_id
 
     logger.info(
-        "request_completed request_id=%s method=%s path=%s status_code=%s latency_ms=%s",
+        (
+            "request_completed request_id=%s method=%s path=%s "
+            "status_code=%s latency_ms=%s"
+        ),
         request_id,
         request.method,
         request.url.path,
