@@ -6,7 +6,7 @@ This repository documents my journey from full-stack development toward job-read
 
 ## Current Status
 
-Active 16-week AI Engineering portfolio build.
+Active AI Engineering portfolio build.
 
 I am updating this repository regularly with working code, daily notes, verification evidence, screenshots, tests, and project documentation.
 
@@ -14,6 +14,7 @@ Current milestone:
 
 - [x] Day 1: Repository and FastAPI environment setup
 - [x] Day 2: Pydantic contracts and mock ticket endpoint
+- [x] Day 3: Service layer and router structure
 - [ ] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
@@ -50,7 +51,7 @@ This repo is designed to show:
 
 ## Final Portfolio Projects
 
-This repository will grow into four main portfolio projects:
+This repository will grow into four main portfolio projects.
 
 ### Project A: AI Document Intelligence Platform
 
@@ -117,12 +118,27 @@ notes/        Daily learning notes
 docs/         Evidence, screenshots, architecture notes, and case studies
 ```
 
+Current backend structure:
+
+```text
+apps/api/app/
+  main.py
+  routers/
+    health.py
+    tickets.py
+  schemas/
+    tickets.py
+  services/
+    tickets.py
+  core/
+```
+
 ## Quick Start
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/M-Afzaal-Afzal/ai-engineering-portfolio.git
 cd ai-engineering-portfolio
 ```
 
@@ -157,6 +173,59 @@ Expected response:
 http://127.0.0.1:8000/docs
 ```
 
+### 5. Test the mock ticket endpoint
+
+```bash
+curl -X POST "http://127.0.0.1:8000/tickets/mock" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "subject": "Login issue",
+    "description": "User cannot login after resetting the password.",
+    "priority": "high",
+    "customer_email": "user@example.com"
+  }'
+```
+
+Expected response:
+
+```json
+{
+  "id": "ticket_mock_001",
+  "subject": "Login issue",
+  "description": "User cannot login after resetting the password.",
+  "priority": "high",
+  "status": "open",
+  "created_at": "..."
+}
+```
+
+### 6. Run tests
+
+```bash
+cd apps/api
+uv run pytest
+```
+
+## API Endpoints
+
+### Health Check
+
+```text
+GET /health
+```
+
+Returns basic API status.
+
+### Mock Ticket Creation
+
+```text
+POST /tickets/mock
+```
+
+Creates a mock support ticket using Pydantic validation.
+
+Invalid request bodies return a `422` validation error.
+
 ## Verification Evidence
 
 Each completed day includes evidence such as API responses, screenshots, terminal logs, test results, or demo captures.
@@ -167,10 +236,12 @@ Evidence is stored in:
 docs/evidence/
 ```
 
-Example:
+Examples:
 
 ```text
 docs/evidence/week-01/day-01/
+docs/evidence/week-01/day-02/
+docs/evidence/week-01/day-03/
 ```
 
 ## Daily Learning Notes
@@ -189,20 +260,6 @@ Each note includes:
 - Problems I faced
 - How I solved them
 - Next steps
-
-## For Recruiters and Hiring Managers
-
-This repository is built to be reviewed as practical proof of my AI Engineering progress.
-
-The best places to review are:
-
-1. This README for the project overview
-2. `apps/api` for backend implementation
-3. `notes/` for daily learning progress
-4. `docs/evidence/` for verification proof
-5. Future case studies inside `docs/`
-
-This is an active portfolio build. The repository will continue to improve as each milestone is completed.
 
 ## Current Day 1 Result
 
@@ -224,13 +281,20 @@ Completed:
 - Added `TicketCreate`, `TicketResponse`, and `ErrorResponse`
 - Added `POST /tickets/mock`
 - Verified valid request returns a ticket response
-- Verified invalid request returns 422 validation error
+- Verified invalid request returns `422` validation error
 - Saved Day 2 evidence
 
-### New API Endpoint
+## Current Day 3 Result
 
-```text
-POST /tickets/mock
+Completed:
+
+- Split FastAPI routes into `app/routers`
+- Moved ticket creation logic into `app/services`
+- Created `app/core` for future configuration
+- Kept `GET /health` working
+- Kept `POST /tickets/mock` working
+- Added service tests with pytest
+- Saved Day 3 evidence
 
 ## Roadmap
 
@@ -255,6 +319,20 @@ The repository will gradually include:
 - Multi-agent workflows
 - Deployment and security documentation
 
+## For Recruiters and Hiring Managers
+
+This repository is built to be reviewed as practical proof of my AI Engineering progress.
+
+The best places to review are:
+
+1. This README for the project overview
+2. `apps/api` for backend implementation
+3. `notes/` for daily learning progress
+4. `docs/evidence/` for verification proof
+5. Future case studies inside `docs/`
+
+This is an active portfolio build. The repository will continue to improve as each milestone is completed.
+
 ## Author
 
 Muhammad Afzaal Afzal
@@ -266,4 +344,3 @@ AI Engineering learner and full-stack developer building practical, production-s
 No open-source license has been added yet.
 
 This repository is public for portfolio and learning visibility. Please do not reuse, copy, or redistribute the code without permission.
-```
