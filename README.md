@@ -17,6 +17,7 @@ Current milestone:
 - [x] Day 3: Service layer and router structure
 - [x] Day 4: Config management with environment settings
 - [x] Day 5: Request logging middleware
+- [x] Day 6: API testing foundation
 - [ ] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
@@ -45,6 +46,7 @@ This repo is designed to show:
 - Service-layer architecture
 - Environment-based configuration
 - Request logging and observability basics
+- Automated testing with pytest
 - LLM application development
 - Retrieval-Augmented Generation systems
 - Vector search and embeddings
@@ -143,9 +145,10 @@ apps/api/
     services/
       tickets.py
   tests/
-    test_ticket_service.py
-    test_settings.py
+    test_api_endpoints.py
     test_request_logging.py
+    test_settings.py
+    test_ticket_service.py
   .env.example
   pyproject.toml
 ```
@@ -242,6 +245,12 @@ From inside `apps/api`:
 uv run pytest
 ```
 
+Expected result:
+
+```text
+All tests passed
+```
+
 ## Configuration
 
 The API uses environment-based configuration through `pydantic-settings`.
@@ -289,6 +298,27 @@ Current logging behavior:
 
 This creates a foundation for future production observability, tracing, debugging, and LLMOps monitoring.
 
+## Testing
+
+The API includes automated tests with `pytest`.
+
+Current test coverage includes:
+
+- Service-layer ticket creation behavior
+- Settings and configuration loading
+- Request logging middleware
+- `X-Request-ID` response headers
+- `GET /health` endpoint behavior
+- Valid `POST /tickets/mock` behavior
+- Default ticket priority behavior
+- Invalid ticket request validation with `422` responses
+
+Run all tests from inside `apps/api`:
+
+```bash
+uv run pytest
+```
+
 ## API Endpoints
 
 ### Health Check
@@ -327,6 +357,7 @@ docs/evidence/week-01/day-02/
 docs/evidence/week-01/day-03/
 docs/evidence/week-01/day-04/
 docs/evidence/week-01/day-05/
+docs/evidence/week-01/day-06/
 ```
 
 ## Daily Learning Notes
@@ -411,6 +442,21 @@ Completed:
 - Verified `/tickets/mock` includes `X-Request-ID`
 - Verified all tests pass
 - Saved Day 5 evidence
+
+## Current Day 6 Result
+
+Completed:
+
+- Added API endpoint tests with pytest
+- Tested `GET /health`
+- Tested valid `POST /tickets/mock`
+- Tested default ticket priority behavior
+- Tested invalid priority returns `422`
+- Tested short subject returns `422`
+- Tested missing description returns `422`
+- Verified `X-Request-ID` appears in API responses
+- Verified all tests pass in one command
+- Saved Day 6 evidence
 
 ## Roadmap
 
