@@ -15,6 +15,7 @@ Current milestone:
 - [x] Day 1: Repository and FastAPI environment setup
 - [x] Day 2: Pydantic contracts and mock ticket endpoint
 - [x] Day 3: Service layer and router structure
+- [x] Day 4: Config management with environment settings
 - [ ] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
@@ -40,6 +41,8 @@ This repo is designed to show:
 
 - Clean backend architecture with Python and FastAPI
 - API design and validation
+- Service-layer architecture
+- Environment-based configuration
 - LLM application development
 - Retrieval-Augmented Generation systems
 - Vector search and embeddings
@@ -77,6 +80,7 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - FastAPI
 - Uvicorn
 - Pydantic
+- pydantic-settings
 - pytest
 
 ### Frontend
@@ -121,16 +125,23 @@ docs/         Evidence, screenshots, architecture notes, and case studies
 Current backend structure:
 
 ```text
-apps/api/app/
-  main.py
-  routers/
-    health.py
-    tickets.py
-  schemas/
-    tickets.py
-  services/
-    tickets.py
-  core/
+apps/api/
+  app/
+    main.py
+    core/
+      settings.py
+    routers/
+      health.py
+      tickets.py
+    schemas/
+      tickets.py
+    services/
+      tickets.py
+  tests/
+    test_ticket_service.py
+    test_settings.py
+  .env.example
+  pyproject.toml
 ```
 
 ## Quick Start
@@ -142,14 +153,23 @@ git clone https://github.com/M-Afzaal-Afzal/ai-engineering-portfolio.git
 cd ai-engineering-portfolio
 ```
 
-### 2. Run the FastAPI backend
+### 2. Prepare environment file
 
 ```bash
 cd apps/api
+cp .env.example .env
+```
+
+The `.env.example` file is safe to commit.
+The local `.env` file should not be committed.
+
+### 3. Run the FastAPI backend
+
+```bash
 uv run uvicorn app.main:app --reload --port 8000
 ```
 
-### 3. Test the health endpoint
+### 4. Test the health endpoint
 
 Open this in your browser:
 
@@ -163,17 +183,18 @@ Expected response:
 {
   "status": "ok",
   "service": "api",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "environment": "development"
 }
 ```
 
-### 4. Open API documentation
+### 5. Open API documentation
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-### 5. Test the mock ticket endpoint
+### 6. Test the mock ticket endpoint
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/tickets/mock" \
@@ -199,12 +220,45 @@ Expected response:
 }
 ```
 
-### 6. Run tests
+### 7. Run tests
+
+From inside `apps/api`:
 
 ```bash
-cd apps/api
 uv run pytest
 ```
+
+## Configuration
+
+The API uses environment-based configuration through `pydantic-settings`.
+
+Configuration is defined in:
+
+```text
+apps/api/app/core/settings.py
+```
+
+Template environment variables are stored in:
+
+```text
+apps/api/.env.example
+```
+
+Current environment variables:
+
+```env
+APP_NAME="AI Engineering Portfolio API"
+APP_VERSION="0.1.0"
+APP_ENV="development"
+LOG_LEVEL="INFO"
+CORS_ORIGINS="http://localhost:3000,http://127.0.0.1:3000"
+```
+
+Important:
+
+- `.env.example` is committed as a safe template.
+- `.env` is local only and should not be committed.
+- Secrets should never be pushed to GitHub.
 
 ## API Endpoints
 
@@ -214,7 +268,7 @@ uv run pytest
 GET /health
 ```
 
-Returns basic API status.
+Returns API status, version, and current environment.
 
 ### Mock Ticket Creation
 
@@ -242,6 +296,7 @@ Examples:
 docs/evidence/week-01/day-01/
 docs/evidence/week-01/day-02/
 docs/evidence/week-01/day-03/
+docs/evidence/week-01/day-04/
 ```
 
 ## Daily Learning Notes
@@ -295,6 +350,20 @@ Completed:
 - Kept `POST /tickets/mock` working
 - Added service tests with pytest
 - Saved Day 3 evidence
+
+## Current Day 4 Result
+
+Completed:
+
+- Added `app/core/settings.py`
+- Added `.env.example`
+- Added `APP_ENV`, `LOG_LEVEL`, and `CORS_ORIGINS`
+- Updated FastAPI app to read config from settings
+- Added CORS middleware
+- Updated `/health` to show the current environment
+- Verified `.env` is ignored and not committed
+- Added settings tests with pytest
+- Saved Day 4 evidence
 
 ## Roadmap
 
