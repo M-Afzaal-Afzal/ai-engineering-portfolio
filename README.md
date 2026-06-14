@@ -18,7 +18,8 @@ Current milestone:
 - [x] Day 4: Config management with environment settings
 - [x] Day 5: Request logging middleware
 - [x] Day 6: API testing foundation
-- [ ] Week 1: FastAPI + project foundation
+- [x] Day 7: Week 1 review and cleanup
+- [x] Week 1: FastAPI + project foundation
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
 - [ ] Week 4: RAG with citations and grounding
@@ -47,6 +48,8 @@ This repo is designed to show:
 - Environment-based configuration
 - Request logging and observability basics
 - Automated testing with pytest
+- Code formatting and linting with Ruff
+- Markdown formatting with Prettier
 - LLM application development
 - Retrieval-Augmented Generation systems
 - Vector search and embeddings
@@ -87,6 +90,7 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - pydantic-settings
 - pytest
 - httpx2
+- Ruff
 
 ### Frontend
 
@@ -107,7 +111,7 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - Evaluation
 - LLMOps
 
-### Infrastructure
+### Infrastructure and Tooling
 
 - GitHub
 - Docker
@@ -115,6 +119,8 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - CI/CD
 - Environment configuration
 - Secret management
+- Ruff formatting and linting
+- Prettier Markdown formatting
 
 ## Repository Structure
 
@@ -251,6 +257,23 @@ Expected result:
 All tests passed
 ```
 
+### 8. Run formatting and quality checks
+
+From inside `apps/api`:
+
+```bash
+uv run ruff format .
+uv run ruff check .
+uv run python -m compileall app tests
+uv run pytest
+```
+
+From the repository root, Markdown can be formatted with:
+
+```bash
+npx --yes prettier --write README.md "notes/**/*.md"
+```
+
 ## Configuration
 
 The API uses environment-based configuration through `pydantic-settings`.
@@ -358,6 +381,7 @@ docs/evidence/week-01/day-03/
 docs/evidence/week-01/day-04/
 docs/evidence/week-01/day-05/
 docs/evidence/week-01/day-06/
+docs/evidence/week-01/day-07/
 ```
 
 ## Daily Learning Notes
@@ -457,6 +481,37 @@ Completed:
 - Verified `X-Request-ID` appears in API responses
 - Verified all tests pass in one command
 - Saved Day 6 evidence
+
+## Current Day 7 Result
+
+Completed:
+
+- Reviewed Week 1 backend foundation
+- Formatted Python files with Ruff
+- Formatted Markdown files with Prettier
+- Verified Python files compile successfully
+- Verified all tests pass with pytest
+- Saved final Week 1 evidence
+- Updated README documentation
+- Prepared Week 1 completion tag
+
+## Week 1 Result
+
+Completed FastAPI backend foundation:
+
+- Repository and monorepo structure
+- FastAPI health endpoint
+- Pydantic request and response schemas
+- Mock ticket endpoint
+- Router and service layer structure
+- Environment-based configuration
+- CORS setup
+- Request logging middleware
+- Request ID tracing with `X-Request-ID`
+- API endpoint tests with pytest
+- Ruff formatting and linting setup
+- Prettier Markdown formatting workflow
+- Verification evidence for every day
 
 ## Roadmap
 
