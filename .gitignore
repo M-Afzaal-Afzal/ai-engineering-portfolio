@@ -2,7 +2,10 @@
 .venv/
 __pycache__/
 *.pyc
+# Environment files
 .env
+.env.*
+!.env.example
 
 # Node / Next.js
 node_modules/

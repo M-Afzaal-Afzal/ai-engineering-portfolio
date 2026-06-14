@@ -1,0 +1,1 @@
+{'app_name': 'AI Engineering Portfolio API', 'app_version': '0.1.0', 'app_env': 'development', 'log_level': 'INFO', 'cors_origins': 'http://localhost:3000,http://127.0.0.1:3000'}
