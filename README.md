@@ -19,23 +19,15 @@ Current milestone:
 - [x] Day 5: Request logging middleware
 - [x] Day 6: API testing foundation
 - [x] Day 7: Week 1 review and cleanup
-- [x] Week 1: FastAPI + project foundation
+- [x] Week 1: FastAPI + AI repo foundation
 - [x] Day 8: Next.js app shell, navigation, and reusable UI components
-- [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
-- [ ] Week 3: Embeddings, chunking, vector search
-- [ ] Week 4: RAG with citations and grounding
-- [ ] Week 5: Advanced retrieval and RAG quality
-- [ ] Week 6: RAG evaluation and regression testing
-- [ ] Week 7: Tool-calling AI agents
-- [ ] Week 8: Workflow automation
-- [ ] Week 9: Multi-provider AI and model routing
-- [ ] Week 10: Cloud deployment, storage, secrets, CI/CD
-- [ ] Week 11: Production security, monitoring, and LLMOps
-- [ ] Week 12: Enterprise agent memory
-- [ ] Week 13: MCP-style tool architecture
-- [ ] Week 14: Multi-agent orchestration
-- [ ] Week 15: Enterprise data agent and governance
-- [ ] Week 16: Final portfolio, case studies, and interview pack
+- [ ] Week 2: Next.js + FastAPI full-stack workflow
+- [ ] Week 3: LLM APIs, Claude/OpenAI basics, and streaming
+- [ ] Week 4: Structured outputs and reliability
+- [ ] Week 5: Embeddings, Chroma, and PDF ingestion
+- [ ] Week 6: RAG with citations and grounding
+- [ ] Week 7: Anthropic Contextual Retrieval
+- [ ] Week 8: RAG evaluation and quality gates
 
 ## Why This Repository Exists
 
@@ -51,34 +43,82 @@ This repo is designed to show:
 - Automated testing with pytest
 - Code formatting and linting with Ruff
 - Markdown formatting with Prettier
+- Product-focused frontend development with Next.js
 - LLM application development
+- Prompt versioning and provider abstraction
+- Streaming AI responses
+- Structured outputs and reliability patterns
 - Retrieval-Augmented Generation systems
 - Vector search and embeddings
-- AI agents with tools and guardrails
-- Evaluation and quality testing
+- PDF ingestion, chunking, and metadata
+- Citations, grounding, and refusal behavior
+- Anthropic-style Contextual Retrieval
+- RAG evaluation and quality testing
 - Deployment and production-readiness
 - Security and observability basics
 - Clear technical documentation and learning consistency
 
-## Final Portfolio Projects
+## Portfolio Projects
 
-This repository will grow into four main portfolio projects.
+This repository will grow into practical AI Engineering projects that can be reviewed through code, screenshots, tests, evidence, demos, and case studies.
 
-### Project A: AI Document Intelligence Platform
+### Project 1: Support Ticket Dashboard
 
-A document-based RAG application with PDF upload, parsing, chunking, embeddings, vector search, cited answers, refusal behavior, and evaluation reports.
+A full-stack support ticket workflow built with Next.js and FastAPI.
 
-### Project B: AI Support Agent with Tool Calling
+It proves the core product foundation before adding AI:
 
-A support agent that can search documentation, summarize user issues, create tickets, use tools safely, and show traceable agent steps.
+- Dashboard UI
+- Reusable frontend components
+- Ticket forms
+- API integration
+- Validation
+- Ticket list and filters
+- Status updates
+- Simple tenant/user context
+- Tests and evidence
 
-### Project C: Enterprise Agent Memory and Tool Hub
+### Project 2: AI Text Intelligence Assistant
 
-An agent system with thread memory, durable facts, semantic memory retrieval, MCP-style tools, permissions, and audit logs.
+An LLM-powered assistant with streaming responses, prompt templates, structured outputs, provider abstraction, token/cost logging, and reliability patterns.
 
-### Project D: Multi-Agent Enterprise Data Assistant
+It proves practical LLM application development:
 
-A multi-agent assistant that combines document retrieval, structured data, memory, governance, citations, and audit trails.
+- OpenAI/Claude provider interface
+- Chat endpoint
+- Streaming UI
+- Prompt versioning
+- Structured extraction
+- Retries and timeouts
+- Token, latency, and cost telemetry
+
+### Project 3: AI Document Intelligence Platform with Contextual RAG
+
+A document-based RAG application with PDF upload, parsing, chunking, embeddings, vector search, cited answers, refusal behavior, contextual retrieval, and evaluation reports.
+
+It proves production-style RAG engineering:
+
+- Text and PDF ingestion
+- Chunking with metadata
+- Persistent Chroma vector store
+- Semantic search
+- Ask-document chat
+- Citations and source cards
+- Weak-context refusal
+- Prompt-injection safeguards
+- Anthropic-style Contextual Retrieval
+- RAG evaluation with quality gates
+
+### Future Projects
+
+Later phases will extend the portfolio into:
+
+- AI Support Agent with tool calling
+- Enterprise Agent Memory Hub
+- MCP-style Tool Hub
+- Multi-agent enterprise assistant
+- Enterprise data intelligence copilot
+- AI Engineering control center
 
 ## Tech Stack
 
@@ -90,7 +130,7 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - Pydantic
 - pydantic-settings
 - pytest
-- httpx2
+- httpx
 - Ruff
 
 ### Frontend
@@ -99,18 +139,24 @@ A multi-agent assistant that combines document retrieval, structured data, memor
 - React
 - TypeScript
 - Tailwind CSS
+- ESLint
 
 ### AI Engineering
 
 - LLM APIs
+- OpenAI
+- Claude / Anthropic
+- Prompt templates
+- Streaming responses
+- Structured outputs
 - Embeddings
 - Vector databases
+- Chroma
 - RAG
-- AI agents
-- Tool calling
-- Structured outputs
-- Evaluation
-- LLMOps
+- Contextual Retrieval
+- Citations
+- RAG evaluation
+- LLMOps basics
 
 ### Infrastructure and Tooling
 
@@ -160,6 +206,22 @@ apps/api/
   pyproject.toml
 ```
 
+Current frontend structure:
+
+```text
+apps/web/
+  app/
+    layout.tsx
+    page.tsx
+    globals.css
+  components/
+    ui/
+      Button.tsx
+      Card.tsx
+      Input.tsx
+  package.json
+```
+
 ## Quick Start
 
 ### 1. Clone the repository
@@ -169,7 +231,7 @@ git clone https://github.com/M-Afzaal-Afzal/ai-engineering-portfolio.git
 cd ai-engineering-portfolio
 ```
 
-### 2. Prepare environment file
+### 2. Prepare the backend environment file
 
 ```bash
 cd apps/api
@@ -180,6 +242,8 @@ The `.env.example` file is safe to commit.
 The local `.env` file should not be committed.
 
 ### 3. Run the FastAPI backend
+
+From inside `apps/api`:
 
 ```bash
 uv run uvicorn app.main:app --reload --port 8000
@@ -244,7 +308,23 @@ Expected response header:
 X-Request-ID: ...
 ```
 
-### 7. Run tests
+### 7. Run the Next.js frontend
+
+From the repository root:
+
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+Open this in your browser:
+
+```text
+http://localhost:3000
+```
+
+### 8. Run backend tests
 
 From inside `apps/api`:
 
@@ -258,7 +338,7 @@ Expected result:
 All tests passed
 ```
 
-### 8. Run formatting and quality checks
+### 9. Run formatting and quality checks
 
 From inside `apps/api`:
 
@@ -267,6 +347,13 @@ uv run ruff format .
 uv run ruff check .
 uv run python -m compileall app tests
 uv run pytest
+```
+
+From inside `apps/web`:
+
+```bash
+npm run lint
+npm run build
 ```
 
 From the repository root, Markdown can be formatted with:
@@ -383,6 +470,7 @@ docs/evidence/week-01/day-04/
 docs/evidence/week-01/day-05/
 docs/evidence/week-01/day-06/
 docs/evidence/week-01/day-07/
+docs/evidence/week-02/day-08/
 ```
 
 ## Daily Learning Notes
@@ -395,12 +483,17 @@ notes/
 
 Each note includes:
 
+- Goal
 - What I learned
-- What I built
-- What I verified
-- Problems I faced
-- How I solved them
-- Next steps
+- Commands or tools I practiced
+- Files created or updated
+- Key concepts
+- Difficulty and solution
+- Evidence folder
+- Checklist
+- Git commit commands
+- Daily score
+- Short reflection
 
 ## Current Day 1 Result
 
@@ -483,21 +576,7 @@ Completed:
 - Verified all tests pass in one command
 - Saved Day 6 evidence
 
-## Day 8 Result
-
-Built the Week 2 Next.js frontend foundation inside `apps/web`:
-
-- Next.js 16 App Router shell with TypeScript, Tailwind CSS v4, and ESLint
-- Reusable `Button`, `Input`, and `Card` UI components
-- Sidebar navigation (`SupportDesk AI` branding, Day 8 badge, four nav items)
-- Responsive layout: dark sidebar on desktop, top nav bar on mobile
-- Static Support Ticket Dashboard page with three metric cards, a recent
-  tickets table with five realistic rows and status/priority badges, and a
-  filter panel using the reusable `Input` and `Button` components
-- OKLCH-based design token palette registered via Tailwind v4 `@theme inline`
-- Web lint: 0 problems. Web build: clean. Backend pytest: 14 passed.
-
-## Previous Day 7 Result
+## Current Day 7 Result
 
 Completed:
 
@@ -509,6 +588,24 @@ Completed:
 - Saved final Week 1 evidence
 - Updated README documentation
 - Prepared Week 1 completion tag
+
+## Current Day 8 Result
+
+Built the Week 2 Next.js frontend foundation inside `apps/web`:
+
+- Next.js 16 App Router shell with TypeScript, Tailwind CSS v4, and ESLint
+- Reusable `Button`, `Input`, and `Card` UI components
+- Sidebar navigation with `SupportDesk AI` branding
+- Responsive layout: dark sidebar on desktop, top nav bar on mobile
+- Static Support Ticket Dashboard page
+- Three metric cards
+- Recent tickets table with five realistic rows
+- Status and priority badges
+- Filter panel using reusable `Input` and `Button` components
+- OKLCH-based design token palette registered through Tailwind v4 `@theme inline`
+- Web lint: 0 problems
+- Web build: clean
+- Backend pytest: 14 passed
 
 ## Week 1 Result
 
@@ -528,6 +625,33 @@ Completed FastAPI backend foundation:
 - Prettier Markdown formatting workflow
 - Verification evidence for every day
 
+## Week 2 Target
+
+Build Project 1 v1: a full-stack support ticket dashboard.
+
+Planned Week 2 work:
+
+- Day 8: Next.js app shell, navigation, and reusable UI components
+- Day 9: Create ticket form with client validation
+- Day 10: Connect frontend to FastAPI ticket API
+- Day 11: Ticket list and filters
+- Day 12: Ticket status update endpoint and UI action
+- Day 13: Simple user/tenant context flow
+- Day 14: Weekly review, demo evidence, and Project 1 v1 documentation
+
+## Roadmap Through Week 8
+
+| Week   | Theme                                     | End-of-week proof                                                                                             | Main output                         |
+| ------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Week 1 | FastAPI + AI Repo Foundation              | Backend skeleton, Pydantic contracts, logs, tests, and evidence folders                                       | Support Ticket Dashboard foundation |
+| Week 2 | Next.js + FastAPI Full-Stack Workflow     | Ticket UI, API integration, forms, validation, auth-lite, and deployment baseline                             | Project 1 v1                        |
+| Week 3 | LLM APIs, Claude/OpenAI Basics, Streaming | AI assistant with streaming chat, prompt versions, and token/cost logs                                        | Project 2 v1                        |
+| Week 4 | Structured Outputs and Reliability        | JSON extraction, retries/timeouts, telemetry, and provider wrapper                                            | Project 2 v2                        |
+| Week 5 | Embeddings, Chroma, PDF Ingestion         | Text/PDF ingestion, chunking, metadata, and vector search UI                                                  | Document search app                 |
+| Week 6 | RAG with Citations and Grounding          | Ask-document chat, citations, weak-context refusal, and prompt-injection basics                               | Project 3 v1                        |
+| Week 7 | Anthropic Contextual Retrieval            | Contextual chunk enrichment, contextual embeddings, contextual BM25/hybrid retrieval, and before/after report | Contextual RAG upgrade              |
+| Week 8 | RAG Evaluation and Quality Gates          | Ragas eval dataset, baseline, failure analysis, CI regression gate, and dashboard                             | Project 3 v2                        |
+
 ## Roadmap
 
 The repository will gradually include:
@@ -538,13 +662,25 @@ The repository will gradually include:
 - Environment configuration
 - Request logging middleware
 - Testing with pytest
+- Next.js dashboard UI
+- Full-stack ticket workflow
 - LLM chat endpoints
 - Streaming responses
+- Prompt templates
 - Structured outputs
+- Provider abstraction
+- Token, latency, and cost logging
 - Document ingestion
+- PDF parsing
+- Chunking and metadata
 - Vector search
 - RAG with citations
+- Grounded refusal behavior
+- Prompt-injection safeguards
+- Anthropic-style Contextual Retrieval
+- Hybrid retrieval
 - RAG evaluation
+- CI quality gates
 - Tool-calling agents
 - Agent memory
 - MCP-style tools
@@ -559,9 +695,10 @@ The best places to review are:
 
 1. This README for the project overview
 2. `apps/api` for backend implementation
-3. `notes/` for daily learning progress
-4. `docs/evidence/` for verification proof
-5. Future case studies inside `docs/`
+3. `apps/web` for frontend implementation
+4. `notes/` for daily learning progress
+5. `docs/evidence/` for verification proof
+6. Future case studies inside `docs/`
 
 This is an active portfolio build. The repository will continue to improve as each milestone is completed.
 
