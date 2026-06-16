@@ -17,3 +17,6 @@ out/
 
 # Editors
 .vscode/
+
+.playwright-test/
+.playwright-mcp/

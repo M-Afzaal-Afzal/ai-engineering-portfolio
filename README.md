@@ -20,6 +20,7 @@ Current milestone:
 - [x] Day 6: API testing foundation
 - [x] Day 7: Week 1 review and cleanup
 - [x] Week 1: FastAPI + project foundation
+- [x] Day 8: Next.js app shell, navigation, and reusable UI components
 - [ ] Week 2: LLM APIs, prompting, streaming, structured outputs
 - [ ] Week 3: Embeddings, chunking, vector search
 - [ ] Week 4: RAG with citations and grounding
@@ -482,7 +483,21 @@ Completed:
 - Verified all tests pass in one command
 - Saved Day 6 evidence
 
-## Current Day 7 Result
+## Day 8 Result
+
+Built the Week 2 Next.js frontend foundation inside `apps/web`:
+
+- Next.js 16 App Router shell with TypeScript, Tailwind CSS v4, and ESLint
+- Reusable `Button`, `Input`, and `Card` UI components
+- Sidebar navigation (`SupportDesk AI` branding, Day 8 badge, four nav items)
+- Responsive layout: dark sidebar on desktop, top nav bar on mobile
+- Static Support Ticket Dashboard page with three metric cards, a recent
+  tickets table with five realistic rows and status/priority badges, and a
+  filter panel using the reusable `Input` and `Button` components
+- OKLCH-based design token palette registered via Tailwind v4 `@theme inline`
+- Web lint: 0 problems. Web build: clean. Backend pytest: 14 passed.
+
+## Previous Day 7 Result
 
 Completed:
 

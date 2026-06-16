@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Surfaces */
+  --color-surface: oklch(0.963 0.008 264);
+  --color-panel: oklch(0.994 0.003 264);
+
+  /* Navigation */
+  --color-nav: oklch(0.155 0.018 264);
+
+  /* Text */
+  --color-ink: oklch(0.19 0.016 264);
+  --color-ink-soft: oklch(0.51 0.016 264);
+
+  /* Borders */
+  --color-wire: oklch(0.882 0.011 264);
+
+  /* Accent */
+  --color-accent: oklch(0.53 0.22 255);
+  --color-accent-hover: oklch(0.46 0.22 255);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+}
