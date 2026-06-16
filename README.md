@@ -12,6 +12,10 @@ I am updating this repository regularly with working code, daily notes, verifica
 
 Current milestone:
 
+Current product focus: SupportDesk AI full-stack support ticket workflow. The
+active work is the support dashboard, local ticket workflows, validation, and
+the frontend-to-backend path that will be connected later.
+
 - [x] Day 1: Repository and FastAPI environment setup
 - [x] Day 2: Pydantic contracts and mock ticket endpoint
 - [x] Day 3: Service layer and router structure
@@ -21,6 +25,7 @@ Current milestone:
 - [x] Day 7: Week 1 review and cleanup
 - [x] Week 1: FastAPI + AI repo foundation
 - [x] Day 8: Next.js app shell, navigation, and reusable UI components
+- [x] Day 9: Create-ticket frontend flow with local state and validation
 - [ ] Week 2: Next.js + FastAPI full-stack workflow
 - [ ] Week 3: LLM APIs, Claude/OpenAI basics, and streaming
 - [ ] Week 4: Structured outputs and reliability
@@ -471,6 +476,7 @@ docs/evidence/week-01/day-05/
 docs/evidence/week-01/day-06/
 docs/evidence/week-01/day-07/
 docs/evidence/week-02/day-08/
+docs/evidence/week-02/day-09/
 ```
 
 ## Daily Learning Notes
@@ -603,6 +609,21 @@ Built the Week 2 Next.js frontend foundation inside `apps/web`:
 - Status and priority badges
 - Filter panel using reusable `Input` and `Button` components
 - OKLCH-based design token palette registered through Tailwind v4 `@theme inline`
+- Web lint: 0 problems
+- Web build: clean
+- Backend pytest: 14 passed
+
+## Current Day 9 Result
+
+Added a polished create-ticket workflow to the SupportDesk AI dashboard:
+
+- Create-ticket flow added through a right-side panel opened by `New Ticket`
+- Client-side validation added for subject, customer email, priority, and description
+- Local ticket submission added with no backend connection yet
+- New tickets are created in memory and inserted at the top of the visible table
+- Inline errors added below each invalid field
+- Success feedback added after valid local submission
+- Existing sample tickets remain as the initial local state
 - Web lint: 0 problems
 - Web build: clean
 - Backend pytest: 14 passed

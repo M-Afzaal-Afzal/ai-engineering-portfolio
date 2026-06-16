@@ -1,55 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
-type TicketStatus = "Open" | "In Progress" | "Resolved";
-type TicketPriority = "High" | "Medium" | "Low";
-
-interface Ticket {
-  id: string;
-  subject: string;
-  customer: string;
-  status: TicketStatus;
-  priority: TicketPriority;
-  created: string;
-}
-
-const tickets: Ticket[] = [
-  { id: "TK-1041", subject: "Cannot export reports to PDF after latest update", customer: "Priya Sharma", status: "Open", priority: "High", created: "Jun 16, 2026" },
-  { id: "TK-1040", subject: "Two-factor authentication not sending SMS codes", customer: "James Okonkwo", status: "In Progress", priority: "High", created: "Jun 15, 2026" },
-  { id: "TK-1039", subject: "Dashboard charts not loading on Safari 17", customer: "Elena Kovacs", status: "Open", priority: "Medium", created: "Jun 15, 2026" },
-  { id: "TK-1038", subject: "Billing address update keeps reverting to previous value", customer: "Marcus Chen", status: "In Progress", priority: "Medium", created: "Jun 14, 2026" },
-  { id: "TK-1037", subject: "API rate limit documentation is unclear for enterprise tier", customer: "Aisha Patel", status: "Resolved", priority: "Low", created: "Jun 13, 2026" },
-  { id: "TK-1036", subject: "Webhook deliveries failing with 401 after key rotation", customer: "Tomas Novak", status: "Open", priority: "High", created: "Jun 13, 2026" },
-  { id: "TK-1035", subject: "CSV import drops rows with special characters", customer: "Fatima Al-Sayed", status: "In Progress", priority: "Medium", created: "Jun 12, 2026" },
-  { id: "TK-1034", subject: "Mobile app crashes when opening attachments", customer: "Liam O'Brien", status: "Open", priority: "High", created: "Jun 12, 2026" },
-  { id: "TK-1033", subject: "Email notifications arriving hours late", customer: "Yuki Tanaka", status: "Resolved", priority: "Medium", created: "Jun 11, 2026" },
-  { id: "TK-1032", subject: "Cannot remove a deactivated team member", customer: "Sofia Rossi", status: "Open", priority: "Low", created: "Jun 11, 2026" },
-  { id: "TK-1031", subject: "Search returns no results for partial keywords", customer: "David Kim", status: "In Progress", priority: "Medium", created: "Jun 10, 2026" },
-  { id: "TK-1030", subject: "Invoice totals rounding incorrectly in EUR", customer: "Camille Dubois", status: "Open", priority: "High", created: "Jun 10, 2026" },
-  { id: "TK-1029", subject: "SSO login loop on corporate network", customer: "Ahmed Hassan", status: "In Progress", priority: "High", created: "Jun 9, 2026" },
-  { id: "TK-1028", subject: "Dark mode contrast too low on settings page", customer: "Grace Lee", status: "Resolved", priority: "Low", created: "Jun 9, 2026" },
-  { id: "TK-1027", subject: "Bulk status update only applies to first page", customer: "Nina Petrov", status: "Open", priority: "Medium", created: "Jun 8, 2026" },
-  { id: "TK-1026", subject: "Timezone shown incorrectly in activity log", customer: "Carlos Mendez", status: "In Progress", priority: "Low", created: "Jun 8, 2026" },
-  { id: "TK-1025", subject: "Attachment preview blank for large PNG files", customer: "Hannah Schmidt", status: "Open", priority: "Medium", created: "Jun 7, 2026" },
-  { id: "TK-1024", subject: "Password reset link expires too quickly", customer: "Omar Farouk", status: "Resolved", priority: "Medium", created: "Jun 7, 2026" },
-  { id: "TK-1023", subject: "Reporting dashboard slow with 90-day range", customer: "Isabella Costa", status: "Open", priority: "High", created: "Jun 6, 2026" },
-  { id: "TK-1022", subject: "Duplicate tickets created from inbound email", customer: "Wei Zhang", status: "In Progress", priority: "Medium", created: "Jun 6, 2026" },
-  { id: "TK-1021", subject: "Custom fields not saving on ticket creation", customer: "Mateo Silva", status: "Open", priority: "High", created: "Jun 5, 2026" },
-  { id: "TK-1020", subject: "Slack integration posts to wrong channel", customer: "Lucas Müller", status: "Resolved", priority: "Low", created: "Jun 5, 2026" },
-  { id: "TK-1019", subject: "Agent availability toggle resets on refresh", customer: "Amara Okafor", status: "In Progress", priority: "Medium", created: "Jun 4, 2026" },
-  { id: "TK-1018", subject: "Knowledge base article images broken", customer: "Ravi Kapoor", status: "Open", priority: "Low", created: "Jun 4, 2026" },
-];
-
-const metrics = [
-  { label: "Open Tickets", value: "24", context: "3 opened today", contextVariant: "blue" as const },
-  { label: "High Priority", value: "7", context: "2 past SLA", contextVariant: "red" as const },
-  { label: "Avg Response", value: "4.2h", context: "Target: under 6h", contextVariant: "green" as const },
-];
+import { CreateTicketPanel } from "@/components/tickets/create-ticket-panel";
+import { INITIAL_TICKETS } from "@/data/tickets";
+import { createLocalTicket } from "@/lib/tickets";
+import {
+  type CreateTicketPayload,
+  type Ticket,
+  type TicketPriority,
+  type TicketStatus,
+} from "@/types/tickets";
 
 const statusVariant: Record<TicketStatus, "blue" | "amber" | "green"> = {
   Open: "blue",
@@ -232,23 +196,53 @@ function FilterBar({
 }
 
 export default function DashboardPage() {
+  const [localTickets, setLocalTickets] = useState<Ticket[]>(() => INITIAL_TICKETS);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterState>({
     statuses: new Set(),
     priorities: new Set(),
   });
   const [page, setPage] = useState(1);
+  const [createPanelOpen, setCreatePanelOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const metrics = useMemo(() => {
+    const openTickets = localTickets.filter((ticket) => ticket.status === "Open").length;
+    const highPriority = localTickets.filter((ticket) => ticket.priority === "High").length;
+
+    return [
+      {
+        label: "Open Tickets",
+        value: String(openTickets),
+        context: "Local state",
+        contextVariant: "blue" as const,
+      },
+      {
+        label: "High Priority",
+        value: String(highPriority),
+        context: "Needs triage",
+        contextVariant: "red" as const,
+      },
+      {
+        label: "Avg Response",
+        value: "4.2h",
+        context: "Target: under 6h",
+        contextVariant: "green" as const,
+      },
+    ];
+  }, [localTickets]);
 
   const hasActiveFilters =
     filters.statuses.size > 0 || filters.priorities.size > 0 || search.trim() !== "";
 
   const filteredTickets = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return tickets.filter((t) => {
+    return localTickets.filter((t) => {
       const matchesSearch =
         query === "" ||
         t.subject.toLowerCase().includes(query) ||
         t.customer.toLowerCase().includes(query) ||
+        t.customerEmail.toLowerCase().includes(query) ||
         t.id.toLowerCase().includes(query);
       const matchesStatus =
         filters.statuses.size === 0 || filters.statuses.has(t.status);
@@ -256,11 +250,7 @@ export default function DashboardPage() {
         filters.priorities.size === 0 || filters.priorities.has(t.priority);
       return matchesSearch && matchesStatus && matchesPriority;
     });
-  }, [search, filters]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [search, filters]);
+  }, [search, filters, localTickets]);
 
   const totalPages = Math.max(1, Math.ceil(filteredTickets.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -272,35 +262,87 @@ export default function DashboardPage() {
   const toggleStatus = (s: TicketStatus) => {
     setFilters((prev) => {
       const next = new Set(prev.statuses);
-      next.has(s) ? next.delete(s) : next.add(s);
+      if (next.has(s)) {
+        next.delete(s);
+      } else {
+        next.add(s);
+      }
       return { ...prev, statuses: next };
     });
+    setPage(1);
   };
 
   const togglePriority = (p: TicketPriority) => {
     setFilters((prev) => {
       const next = new Set(prev.priorities);
-      next.has(p) ? next.delete(p) : next.add(p);
+      if (next.has(p)) {
+        next.delete(p);
+      } else {
+        next.add(p);
+      }
       return { ...prev, priorities: next };
     });
+    setPage(1);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
   };
 
   const clearFilters = () => {
     setSearch("");
     setFilters({ statuses: new Set(), priorities: new Set() });
+    setPage(1);
   };
+
+  const closeCreatePanel = useCallback(() => {
+    setCreatePanelOpen(false);
+  }, []);
+
+  const handleCreateTicket = useCallback((payload: CreateTicketPayload) => {
+    const newTicket = createLocalTicket(payload, localTickets);
+
+    setLocalTickets((currentTickets) => [newTicket, ...currentTickets]);
+    setSearch("");
+    setFilters({ statuses: new Set(), priorities: new Set() });
+    setPage(1);
+    setSuccessMessage(`${newTicket.id} created locally and added to the ticket list.`);
+  }, [localTickets]);
 
   return (
     <main className="flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
       {/* Page header */}
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-2xl font-semibold text-ink tracking-tight">
-          Support Tickets
-        </h1>
-        <p className="mt-1.5 text-sm text-ink-soft max-w-xl leading-6">
-          Monitor and manage customer support requests across all channels.
-        </p>
+      <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-ink tracking-tight">
+            Support Tickets
+          </h1>
+          <p className="mt-1.5 text-sm text-ink-soft max-w-xl leading-6">
+            Monitor and manage customer support requests across all channels.
+          </p>
+        </div>
+        <Button
+          type="button"
+          className="w-full sm:w-auto"
+          onClick={() => {
+            setSuccessMessage("");
+            setCreatePanelOpen(true);
+          }}
+        >
+          New Ticket
+        </Button>
       </div>
+
+      <div className="sr-only" aria-live="polite">
+        {successMessage}
+      </div>
+
+      {successMessage && (
+        <div className="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800">
+          {successMessage}
+        </div>
+      )}
 
       {/* Metric cards — mobile: horizontal scroll strip */}
       <div className="sm:hidden -mx-4 px-4 overflow-x-auto mb-6 scrollbar-none">
@@ -352,7 +394,7 @@ export default function DashboardPage() {
           <FilterBar
             search={search}
             filters={filters}
-            onSearchChange={setSearch}
+            onSearchChange={handleSearchChange}
             onToggleStatus={toggleStatus}
             onTogglePriority={togglePriority}
             onClear={clearFilters}
@@ -523,6 +565,12 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
+
+      <CreateTicketPanel
+        open={createPanelOpen}
+        onClose={closeCreatePanel}
+        onCreateTicket={handleCreateTicket}
+      />
     </main>
   );
 }
